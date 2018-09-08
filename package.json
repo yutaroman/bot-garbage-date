@@ -1,0 +1,24 @@
+{
+  "name": "bot-garbage-date",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yutaroman/bot-garbage-date.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yutaroman/bot-garbage-date/issues"
+  },
+  "homepage": "https://github.com/yutaroman/bot-garbage-date#readme",
+  "dependencies": {
+    "@line/bot-sdk": "^6.2.1",
+    "express": "^4.16.3"
+  }
+}
