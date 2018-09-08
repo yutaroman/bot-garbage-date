@@ -28,9 +28,9 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
     let events_processed = [];
 
     // イベントオブジェクトを順次処理
-    req.body.events.forEach((event) => {
-        if (event.type === 'message' && event.type === 'text') {
-            if (event.message === 'こんにちは') {
+    req.body.events.map((event) => {
+        if (event.type === 'message' && event.message.type === 'text') {
+            if (event.message.text === 'こんにちは') {
                 // replyMessage 関数で返信し、そのプロミスを events_processed に追加
                 events_processed.push(bot.replyMessage(event.replyToken, {
                     type: 'text',
@@ -41,7 +41,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
     });
 
     // 全てのイベント処理が終了したら、何個のイベントが処理されたかを出力
-    promise.all(events_processed).then(
+    Promise.all(events_processed).then(
         (response) => {
             console.log(`${response.length} event(s) processed.`);
         }
