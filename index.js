@@ -28,7 +28,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
     let events_processed = [];
 
     // イベントオブジェクトを順次処理
-    req.body.events.map((event) => {
+    req.body.events.forEach((event) => {
         if (event.type === 'message' && event.message.type === 'text') {
             if (event.message.text === 'こんにちは') {
                 // replyMessage 関数で返信し、そのプロミスを events_processed に追加
