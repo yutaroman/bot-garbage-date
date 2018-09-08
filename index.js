@@ -21,9 +21,6 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
     // 先行して LINE 側にステータスコード 200 でレスポンスする。
     res.sendStatus(200);
 
-    // Test code
-    // console.log(req.body);
-
     // イベント処理のプロセスを格納する配列
     let events_processed = [];
 
@@ -43,7 +40,6 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
     // 全てのイベント処理が終了したら、何個のイベントが処理されたかを出力
     Promise.all(events_processed).then(
         (response) => {
-            console.log('自動デプロイテスト');
             console.log(`${response.length} event(s) processed.`);
         }
     );
