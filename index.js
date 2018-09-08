@@ -7,7 +7,7 @@ const line_config = {
     // 環境変数からアクセストークンをセット
     channelAccessToken: process.env.LINE_ACCESS_TOKEN,
     // 環境変数から Channel Secret をセット
-    channelSecret: process.env.LINE_CHANNEL_SECRET,
+    channelSecret: process.env.LINE_CHANNEL_SECRET
 }
 
 // Web サーバーの設定
@@ -34,7 +34,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                 // replyMessage 関数で返信し、そのプロミスを events_processed に追加
                 events_processed.push(bot.replyMessage(event.replyToken, {
                     type: 'text',
-                    message: 'これはこれは'
+                    text: 'これはこれは'
                 }));
             }
         }
@@ -43,6 +43,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
     // 全てのイベント処理が終了したら、何個のイベントが処理されたかを出力
     Promise.all(events_processed).then(
         (response) => {
+            console.log('自動デプロイテスト');
             console.log(`${response.length} event(s) processed.`);
         }
     );
