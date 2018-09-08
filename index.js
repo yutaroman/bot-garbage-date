@@ -29,8 +29,8 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
 
     // イベントオブジェクトを順次処理
     req.body.events.map((event) => {
-        if (event.type == 'message' && event.message.type == 'text') {
-            if (event.message.text == 'こんにちは') {
+        if (event.type === 'message' && event.message.type === 'text') {
+            if (event.message.text === 'こんにちは') {
                 // replyMessage 関数で返信し、そのプロミスを events_processed に追加
                 events_processed.push(bot.replyMessage(event.replyToken, {
                     type: 'text',
