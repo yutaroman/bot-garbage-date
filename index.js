@@ -13,8 +13,37 @@ const line_config = {
 // Web サーバーの設定
 server.listen(process.env.PORT || 3000);
 
+// API コールの為のクライアントインスタンスを作成
+const bot = new line.Client(line_config);
+
 // ルーターの設定
 server.post('/webhook', line.middleware(line_config), (req, res, next) => {
+    // 先行して LINE 側にステータスコード 200 でレスポンスする。
     res.sendStatus(200);
-    console.log(req.body);
+
+    // Test code
+    // console.log(req.body);
+
+    // イベント処理のプロセスを格納する配列
+    let events_processed = [];
+
+    // イベントオブジェクトを順次処理
+    req.body.events.forEach((event) => {
+        if (event.type === 'message' && event.type === 'text') {
+            if (event.message === 'こんにちは') {
+                // replyMessage 関数で返信し、そのプロミスを events_processed に追加
+                events_processed.push(bot.replyMessage(event.replyToken, {
+                    type: 'text',
+                    message: 'これはこれは'
+                }));
+            }
+        }
+    });
+
+    // 全てのイベント処理が終了したら、何個のイベントが処理されたかを出力
+    promise.all(events_processed).then(
+        (response) => {
+            console.log(`${response.length} event(s) processed.`);
+        }
+    );
 });
