@@ -9,6 +9,10 @@
 
 [Heroku](https://jp.heroku.com/)
 
+## Heroku コマンド
+
+- インスタンス上でbashを実行させる : `$ heroku run bash`
+
 ### デプロイ手順
 
 [github](https://github.com/yutaroman/bot-garbage-date) と [Heroku](https://jp.heroku.com/) を連携。
