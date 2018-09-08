@@ -47,6 +47,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                         }
                     }
                 }).then((responses) => {
+                    console.log(responses);
                     if (responses[0].queryResult && responses[0].queryResult.action === 'handle-garbage-question') {
                         let message_text = '';
                         if (responses[0].queryResult.parameters.fields.date.stringValue) {
