@@ -46,4 +46,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
             console.log(`${response.length} event(s) processed.`);
         }
     );
+
+    // debug
+    process.on('unhandledRejection', console.dir);
 });
