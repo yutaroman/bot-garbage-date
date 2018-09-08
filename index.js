@@ -43,7 +43,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                     queryInput: {
                         text: {
                             text: event.message.text,
-                            lang: 'ja',
+                            languageCode: 'ja',
                         }
                     }
                 }).then((responses) => {
