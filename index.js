@@ -49,7 +49,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                 }).then((responses) => {
                     console.dir(responses);
                     if (responses[0].queryResult) {
-                        let message_text = 'すいません。回答できる知識がありません。もっと勉強しますね！';
+                        let message_text = '';
 
                         // intents : basic ( 挨拶とか )
                         if (responses[0].queryResult.action === 'basic') {
@@ -91,6 +91,8 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                                 message_text = '今日か明日の、ゴミ回収の種類しか答えられないの。'
                             }
 
+                        } else {
+                            message_text = 'すいません。回答できる知識がありません。もっと勉強しますね！';
                         }
 
                         // メッセージを返す
