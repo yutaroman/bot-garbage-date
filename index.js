@@ -48,10 +48,11 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                     }
                 }).then((responses) => {
                     console.dir(responses);
+                    let message_text = 'ほげほげ';
 
+                    // intents : handle-garbage-question
                     if (responses[0].queryResult && responses[0].queryResult.action === 'handle-garbage-question') {
                         let responseWeek = responses[0].queryResult.parameters.fields.date.stringValue;
-                        let message_text = '';
 
                         if (responseWeek) {
                             // 曜日の取得
@@ -75,19 +76,21 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                             }
 
                             if (garbage_type !== '') {
-                                message_text = `【${responseWeek}は${dayOfWeekStr}曜日だから、以下の回収があるよ！】\n${garbage_type}\n分別に困ったら、横浜市のホームページを確認してね！\nhttp://www.city.yokohama.lg.jp/shigen/sub-shimin/dashikata/`
+                                message_text = `【${responseWeek}は${dayOfWeekStr}曜日だから、以下の回収があるよ！】\n${garbage_type}\n\n分別に困ったら、横浜市のホームページを確認してね！\nhttp://www.city.yokohama.lg.jp/shigen/sub-shimin/dashikata/`
                             } else {
                                 message_text = `${responseWeek}は${dayOfWeekStr}曜日だから、ゴミの回収は無いよ！`
                             }
                         } else {
-                            message_text = '今日、もしくは明日を入力してください。'
+                            message_text = '今日か明日の、ゴミ回収の種類しか答えられないの。'
                         }
 
-                        return bot.replyMessage(event.replyToken, {
-                            type: 'text',
-                            text: message_text
-                        });
                     }
+
+                    // メッセージを返す
+                    return bot.replyMessage(event.replyToken, {
+                        type: 'text',
+                        text: message_text
+                    });
                 })
             )
         }
