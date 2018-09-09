@@ -53,7 +53,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                         let responseWeek = responses[0].queryResult.parameters.fields.date.stringValue;
                         let message_text = '';
 
-                        if (responseWeek.length > 0) {
+                        if (responseWeek) {
                             // 曜日の取得
                             let date = new Date();
                             let dayOfWeek = 0;
