@@ -48,49 +48,57 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                     }
                 }).then((responses) => {
                     console.dir(responses);
-                    let message_text = 'ほげほげ';
+                    if (responses[0].queryResult) {
+                        let message_text = 'すいません。回答できる知識がありません。もっと勉強しますね！';
 
-                    // intents : handle-garbage-question
-                    if (responses[0].queryResult && responses[0].queryResult.action === 'handle-garbage-question') {
-                        let responseWeek = responses[0].queryResult.parameters.fields.date.stringValue;
-
-                        if (responseWeek) {
-                            // 曜日の取得
-                            let date = new Date();
-                            let dayOfWeek = 0;
-                            if (responseWeek === '今日') {
-                                dayOfWeek = date.getDay();
-                            } else if (responseWeek === '明日') {
-                                dayOfWeek = date.getDay() + 1;
-                            }
-                            let dayOfWeekStr = ['日', '月', '火', '水', '木', '金', '土'][dayOfWeek];
-
-                            // ゴミの日条件分岐
-                            let garbage_type = '';
-                            if (dayOfWeekStr === '月' || dayOfWeekStr === '金') {
-                                garbage_type = '・燃やすゴミ\n・燃えないゴミ\n・スプレー缶\n・乾電池';
-                            } else if (dayOfWeekStr === '火') {
-                                garbage_type = '・プラスチック製容器包装\n・古紙、古布';
-                            } else if (dayOfWeekStr === '土') {
-                                garbage_type = '・缶、ビン、ペットボトル\n・小さな金属類';
-                            }
-
-                            if (garbage_type !== '') {
-                                message_text = `【${responseWeek}は${dayOfWeekStr}曜日だから、以下の回収があるよ！】\n${garbage_type}\n\n分別に困ったら、横浜市のホームページを確認してね！\nhttp://www.city.yokohama.lg.jp/shigen/sub-shimin/dashikata/`
-                            } else {
-                                message_text = `${responseWeek}は${dayOfWeekStr}曜日だから、ゴミの回収は無いよ！`
-                            }
-                        } else {
-                            message_text = '今日か明日の、ゴミ回収の種類しか答えられないの。'
+                        // intents : basic ( 挨拶とか )
+                        if (response[0].queryResult.action === 'basic') {
+                            // 学習するまではオウム返しにする
+                            let response_greeting = responses[0].queryResult.queryText;
+                            let message_text = `${response_greeting}！今日と明日、どっちのゴミの回収を知りたい？`
                         }
 
-                    }
+                        // intents : handle-garbage-question
+                        if (responses[0].queryResult.action === 'handle-garbage-question') {
+                            let responseWeek = responses[0].queryResult.parameters.fields.date.stringValue;
+                            if (responseWeek) {
+                                // 曜日の取得
+                                let date = new Date();
+                                let dayOfWeek = 0;
+                                if (responseWeek === '今日') {
+                                    dayOfWeek = date.getDay();
+                                } else if (responseWeek === '明日') {
+                                    dayOfWeek = date.getDay() + 1;
+                                }
+                                let dayOfWeekStr = ['日', '月', '火', '水', '木', '金', '土'][dayOfWeek];
 
-                    // メッセージを返す
-                    return bot.replyMessage(event.replyToken, {
-                        type: 'text',
-                        text: message_text
-                    });
+                                // ゴミの日条件分岐
+                                let garbage_type = '';
+                                if (dayOfWeekStr === '月' || dayOfWeekStr === '金') {
+                                    garbage_type = '・燃やすゴミ\n・燃えないゴミ\n・スプレー缶\n・乾電池';
+                                } else if (dayOfWeekStr === '火') {
+                                    garbage_type = '・プラスチック製容器包装\n・古紙、古布';
+                                } else if (dayOfWeekStr === '土') {
+                                    garbage_type = '・缶、ビン、ペットボトル\n・小さな金属類';
+                                }
+
+                                if (garbage_type !== '') {
+                                    message_text = `【${responseWeek}は${dayOfWeekStr}曜日だから、以下の回収があるよ！】\n${garbage_type}\n\n分別に困ったら、横浜市のホームページを確認してね！\nhttp://www.city.yokohama.lg.jp/shigen/sub-shimin/dashikata/`
+                                } else {
+                                    message_text = `${responseWeek}は${dayOfWeekStr}曜日だから、ゴミの回収は無いよ！`
+                                }
+                            } else {
+                                message_text = '今日か明日の、ゴミ回収の種類しか答えられないの。'
+                            }
+
+                        }
+
+                        // メッセージを返す
+                        return bot.replyMessage(event.replyToken, {
+                            type: 'text',
+                            text: message_text
+                        });
+                    }
                 })
             )
         }
