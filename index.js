@@ -55,7 +55,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                         if (responses[0].queryResult.action === 'basic') {
                             // 学習するまではオウム返しにする
                             let response_greeting = responses[0].queryResult.queryText;
-                            let message_text = `${response_greeting}！今日と明日、どっちのゴミの回収を知りたいですか？`
+                            message_text = `${response_greeting}！今日と明日、どっちのゴミの回収を知りたいですか？`
                         }
 
                         // intents : handle-garbage-question
