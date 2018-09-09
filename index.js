@@ -67,15 +67,15 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                             // ゴミの日条件分岐
                             let garbage_type = '';
                             if (dayOfWeekStr === '月' || dayOfWeekStr === '金') {
-                                garbage_type = '可燃';
+                                garbage_type = '燃やすゴミ、燃えないゴミ、スプレー缶、乾電池';
                             } else if (dayOfWeekStr === '火') {
-                                garbage_type = 'プラスチックと紙';
+                                garbage_type = 'プラスチック製容器包装、古紙・古布';
                             } else if (dayOfWeekStr === '土') {
-                                garbage_type = 'ビンカン';
+                                garbage_type = '缶・ビン・ペットボトル、小さな金属類';
                             }
 
                             if (garbage_type !== '') {
-                                message_text = `${responseWeek}は${dayOfWeekStr}曜日だから、${garbage_type}ゴミの日よ！`
+                                message_text = `${responseWeek}は${dayOfWeekStr}曜日だから、${garbage_type}の回収日よ！\n分別に困ったら、横浜市のホームページを確認してね！\nhttp://www.city.yokohama.lg.jp/shigen/sub-shimin/dashikata/`
                             } else {
                                 message_text = `${responseWeek}は${dayOfWeekStr}曜日だから、ゴミの回収はありません！`
                             }
