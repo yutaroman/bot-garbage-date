@@ -48,11 +48,19 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                     }
                 }).then((responses) => {
                     if (responses[0].queryResult && responses[0].queryResult.action === 'handle-garbage-question') {
+                        let date = new Date();
+                        let dayOfWeek = date.getDay();
+                        let dayOfWeekStr = ['日', '月', '火', '水', '木', '金', '土'][dayOfWeek];
+
+                        let responseWeek = responses[0].queryResult.parameters.fields.date.stringValue;
                         let message_text = '';
-                        if (responses[0].queryResult.parameters.fields.date.stringValue) {
-                            message_text = `毎度！${responses[0].queryResult.parameters.fields.date.stringValue}ね！！`
+
+                        if (responseWeek === '今日') {
+                            message_text = `${responseWeek}は${dayOfWeekStr}曜日だから、可燃ゴミの日ね！！`
+                        } else if (responseWeek === '明日') {
+                            message_text = `${responseWeek}は${dayOfWeekStr}曜日だから、不燃の日ね！！`
                         } else {
-                            message_text = '毎度！質問は何！？';
+                            message_text = '今日、もしくは明日を入力してください。'
                         }
 
                         return bot.replyMessage(event.replyToken, {
