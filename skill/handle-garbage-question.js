@@ -32,6 +32,8 @@ module.exports = class handleGarbageQuestion {
                 }
             }
         }
+
+        console.log(this.required_parameter);
     }
 
     // パラメータが全部揃ったら実行する処理
