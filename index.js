@@ -49,7 +49,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                 }).then((responses) => {
                     if (responses[0].queryResult && responses[0].queryResult.action === 'handle-garbage-question') {
                         let responseWeek = responses[0].queryResult.parameters.fields.date.stringValue;
-                        console.log(responseWeek);
+                        console.log(responseWeek.length);
 
                         // 曜日の取得
                         let date = new Date();
