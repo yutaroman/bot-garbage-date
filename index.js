@@ -56,10 +56,9 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                             // 学習するまではオウム返しにする
                             let response_greeting = responses[0].queryResult.queryText;
                             message_text = `${response_greeting}！今日と明日、どっちのゴミの回収を知りたいですか？`
-                        }
 
                         // intents : handle-garbage-question
-                        if (responses[0].queryResult.action === 'handle-garbage-question') {
+                        } else if (responses[0].queryResult.action === 'handle-garbage-question') {
                             let responseWeek = responses[0].queryResult.parameters.fields.date.stringValue;
                             if (responseWeek) {
                                 // 曜日の取得
@@ -91,6 +90,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                                 message_text = '今日か明日の、ゴミ回収の種類しか答えられないの。'
                             }
 
+                        // 判別できない場合
                         } else {
                             message_text = 'すいません。回答できる知識がありません。もっと勉強しますね！';
                         }
