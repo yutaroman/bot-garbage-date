@@ -59,7 +59,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                         }
 
                         // intents : handle-garbage-question
-                        if (responses[0].queryResult.action === 'handle-garbage-question') {
+                        else if (responses[0].queryResult.action === 'handle-garbage-question') {
                             let responseWeek = responses[0].queryResult.parameters.fields.date.stringValue;
                             if (responseWeek) {
                                 // 曜日の取得
