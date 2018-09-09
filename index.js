@@ -16,25 +16,49 @@ server.listen(process.env.PORT || 5000, () => {
 /*
 ** Mount bot-express
 */
-server.use("/webhook", bot_express({
+server.use("/bot/webhook", bot_express({
+    language: "ja",
+    messenger: {
+        line: {
+            channel_id: process.env.LINE_CHANNEL_ID,
+            channel_secret: process.env.LINE_CHANNEL_SECRET
+        }
+    },
     nlu: {
         type: "dialogflow",
-        language: "ja",
+        options: {
+            project_id: process.env.GOOGLE_PROJECT_ID,
+            client_email: process.env.GOOGLE_CLIENT_EMAIL,
+            private_key: process.env.GOOGLE_PRIVATE_KEY,
+            language: "ja"
+        }
+    },
+    parser: [{
+        type: "dialogflow",
+        options: {
+            project_id: process.env.GOOGLE_PROJECT_ID,
+            client_email: process.env.GOOGLE_CLIENT_EMAIL,
+            private_key: process.env.GOOGLE_PRIVATE_KEY,
+            language: "ja"
+        }
+    }],
+    memory: {
+        type: "memory-cache",
+        retention: Number(process.env.MEMORY_RETENTION)
+    },
+    translator: {
+        type: "google",
+        enable_lang_detection: false,
+        enable_translation: false,
         options: {
             project_id: process.env.GOOGLE_PROJECT_ID,
             client_email: process.env.GOOGLE_CLIENT_EMAIL,
             private_key: process.env.GOOGLE_PRIVATE_KEY
         }
     },
-    memory: {
-        type: "memory-cache",
-        retention: 600
-    },
-    line_channel_secret: process.env.LINE_CHANNEL_SECRET,
-    line_access_token: process.env.LINE_ACCESS_TOKEN,
-    default_skill: process.env.DEFAULT_SKILL,
-    google_project_id: process.env.GOOGLE_PROJECT_ID,
-    auto_translation: process.env.AUTO_TRANSLATION
+    skill: {
+        default: process.env.DEFAULT_SKILL
+    }
 }));
 
 module.exports = server;
