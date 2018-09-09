@@ -19,7 +19,6 @@
   "homepage": "https://github.com/yutaroman/bot-garbage-date#readme",
   "dependencies": {
     "@line/bot-sdk": "^6.2.1",
-    "bot-express": "^0.4.7",
     "dialogflow": "^0.6.0",
     "express": "^4.16.3"
   }
