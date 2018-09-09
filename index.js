@@ -48,9 +48,16 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                     }
                 }).then((responses) => {
                     if (responses[0].queryResult && responses[0].queryResult.action === 'handle-garbage-question') {
+                        let responseWeek = responses[0].queryResult.parameters.fields.date.stringValue;
+
                         // 曜日の取得
                         let date = new Date();
-                        let dayOfWeek = date.getDay();
+                        let dayOfWeek = 0;
+                        if (responseWeek === '今日') {
+                            dayOfWeek = date.getDay();
+                        } else if (responseWeek === '明日') {
+                            dayOfWeek = date.getDay() + 1;
+                        }
                         let dayOfWeekStr = ['日', '月', '火', '水', '木', '金', '土'][dayOfWeek];
 
                         // ゴミの日条件分岐
@@ -63,7 +70,6 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                             garbage_type = 'ビンカン';
                         }
 
-                        let responseWeek = responses[0].queryResult.parameters.fields.date.stringValue;
                         let message_text = '';
 
                         if (garbage_type !== '') {
