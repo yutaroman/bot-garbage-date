@@ -23,6 +23,12 @@ module.exports = class handleGarbageQuestion {
                             }
                         ]
                     }
+                },
+                parser: (value, bot, event, context, resolve, reject) => {
+                    if (['今日', '明日'].includes(value)) {
+                        return resolve(value);
+                    }
+                    return reject();
                 }
             }
         }
