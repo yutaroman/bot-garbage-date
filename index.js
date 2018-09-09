@@ -48,19 +48,34 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
                     }
                 }).then((responses) => {
                     if (responses[0].queryResult && responses[0].queryResult.action === 'handle-garbage-question') {
+                        // 曜日の取得
                         let date = new Date();
                         let dayOfWeek = date.getDay();
                         let dayOfWeekStr = ['日', '月', '火', '水', '木', '金', '土'][dayOfWeek];
 
+                        // ゴミの日条件分岐
+                        let garbage_type = '';
+                        if (dayOfWeekStr === '月' || dayOfWeekStr === '金') {
+                            garbage_type = '可燃';
+                        } else if (dayOfWeekStr === '火') {
+                            garbage_type = 'プラスチックと紙';
+                        } else if (dayOfWeekStr === '土') {
+                            garbage_type = 'ビンカン';
+                        }
+
                         let responseWeek = responses[0].queryResult.parameters.fields.date.stringValue;
                         let message_text = '';
 
-                        if (responseWeek === '今日') {
-                            message_text = `${responseWeek}は${dayOfWeekStr}曜日だから、可燃ゴミの日ね！！`
-                        } else if (responseWeek === '明日') {
-                            message_text = `${responseWeek}は${dayOfWeekStr}曜日だから、不燃の日ね！！`
+                        if (garbage_type !== '') {
+                            if (responseWeek === '今日') {
+                                message_text = `${responseWeek}は${dayOfWeekStr}曜日だから、${garbage_type}ゴミの日よ！`
+                            } else if (responseWeek === '明日') {
+                                message_text = `${responseWeek}は${dayOfWeekStr}曜日だから、不燃の日ね！！`
+                            } else {
+                                message_text = '今日、もしくは明日を入力してください。'
+                            }
                         } else {
-                            message_text = '今日、もしくは明日を入力してください。'
+                            message_text = `${responseWeek}は${dayOfWeekStr}曜日だから、ゴミの回収はありません！`
                         }
 
                         return bot.replyMessage(event.replyToken, {
